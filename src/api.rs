@@ -1,12 +1,14 @@
-use actix_web::{post, web, Responder, HttpResponse};
+use actix_web::{web, HttpResponse, Responder};
+use futures::future::join_all;
+use handlebars::Handlebars;
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, iter};
+use std::{collections::HashMap, iter::*};
 use trust_dns_resolver::{
     name_server::{GenericConnection, GenericConnectionProvider, TokioRuntime},
     AsyncResolver, Name,
 };
 
-use crate::dns;
+use crate::dns::{self, DomainData};
 
 #[derive(Debug)]
 struct BitFlipper {
@@ -25,7 +27,7 @@ impl BitFlipper {
     }
 }
 
-impl iter::Iterator for BitFlipper {
+impl Iterator for BitFlipper {
     type Item = Name;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -41,8 +43,6 @@ impl iter::Iterator for BitFlipper {
                 self.byte_pos = 0;
             }
 
-            // println!("{:?}", self);
-
             let mut bytes = self.bytes.clone();
             bytes[self.vector_pos] = bytes[self.vector_pos] ^ (1 << self.byte_pos);
             self.byte_pos += 1; // move to next bit position in a byte
@@ -57,7 +57,7 @@ impl iter::Iterator for BitFlipper {
 }
 
 #[derive(Debug, Deserialize)]
-struct MyInfo {
+pub struct MyInfo {
     domain_name: String,
 }
 
@@ -66,20 +66,43 @@ struct MyResponse {
     domains: HashMap<String, Option<dns::DomainData>>,
 }
 
-#[post("/bitflip")]
-async fn do_it(
-    info: web::Json<MyInfo>,
+pub async fn bitflip_html(
+    hb: web::Data<Handlebars<'_>>,
+    info: web::Form<MyInfo>,
+    resolver: web::Data<AsyncResolver<GenericConnection, GenericConnectionProvider<TokioRuntime>>>,
+) -> impl Responder {
+    let name = Name::from_str_relaxed(&info.domain_name).unwrap();
+    let resolver = resolver.get_ref();
+    let flipper = BitFlipper::new(&name);
+
+    let domains = HashMap::<String, Option<DomainData>>::from_iter(
+        join_all(flipper.map(async move |d| {
+            let new_name = d.to_utf8();
+            let dd = dns::resolve_domain(resolver, d).await;
+            (new_name, dd)
+        }))
+        .await,
+    );
+
+    HttpResponse::Ok().content_type(mime::TEXT_HTML_UTF_8).body(
+        hb.render("domain_table.html", &MyResponse { domains })
+            .unwrap(),
+    )
+}
+
+pub async fn bitflip_json(
+    info: web::Form<MyInfo>,
     resolver: web::Data<AsyncResolver<GenericConnection, GenericConnectionProvider<TokioRuntime>>>,
 ) -> impl Responder {
     let name = Name::from_str_relaxed(&info.domain_name).unwrap();
     let flipper = BitFlipper::new(&name);
     let mut ret = MyResponse {
-        domains: HashMap::new()
+        domains: HashMap::new(),
     };
 
     for d in flipper {
         let new_name = d.to_utf8();
-        let dd  = dns::resolve_domain(resolver.get_ref(), d).await;
+        let dd = dns::resolve_domain(resolver.get_ref(), d).await;
         ret.domains.insert(new_name, dd);
     }
 

@@ -10,7 +10,7 @@ pub struct DomainData {
     ips: Vec<IpAddr>,
 }
 
-#[tracing::instrument]
+#[tracing::instrument(skip_all, fields(domain = %domain.to_ascii()), ret)]
 pub async fn resolve_domain(
     resolver: &AsyncResolver<GenericConnection, GenericConnectionProvider<TokioRuntime>>,
     domain: Name,

@@ -4,18 +4,24 @@ name = "bitsquatting"
 version = "0.1.0"
 authors = ["Matthew Mahnke"]
 license = "Unlicense OR WTFPL"
-edition = "2018"
+edition = "2021"
 publish = false
 
 [dependencies]
-# actix-files = "0.6.0-beta"
-actix-web = "4.0.0-beta"
-opentelemetry = { version = "0.13", features = ["rt-tokio-current-thread"] }
-opentelemetry-jaeger = { version = "0.12", features = ["tokio"] }
-serde = "*"
+# actix-cors = "0.6"
+actix-files = "0.6"
+actix-web = "4"
+actix-web-lab = "0.11"
+futures = "*"
+handlebars = { version = "4", features = ["dir_source"] }
+mime = "*"
+opentelemetry = { version = "0.17", features = ["rt-tokio-current-thread"] }
+opentelemetry-jaeger = { version = "0.16", features = ["tokio", "rt-tokio-current-thread"] }
+serde = { version = "*", features = ["derive"] }
+serde_json = "*"
 tracing = "0.1"
-tracing-actix-web = "0.4.0-beta"
-tracing-bunyan-formatter = "0.1"
-tracing-opentelemetry = "0.12"
-tracing-subscriber = { version = "0.2", features = ["env-filter", "registry"] }
+tracing-actix-web = "0.5"
+tracing-bunyan-formatter = "0.3"
+tracing-opentelemetry = "0.17"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "registry"] }
 trust-dns-resolver = "0.20"

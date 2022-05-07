@@ -1,0 +1,26 @@
+<table>
+  <thead>
+    <tr>
+      <th>Domain Name</th>
+      <th>IP Addresses</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each domains}}
+      <tr>
+        <td>{{@key}}</td>
+        <td>
+          {{#if ips}}
+            <ul>
+              {{#each ips}}
+                <li>{{this}}</li>
+              {{/each}}
+            </ul>
+          {{else}}
+            <span data-ips="false">No IP addresses registered</span>
+          {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

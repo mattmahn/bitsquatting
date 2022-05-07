@@ -1,0 +1,139 @@
+/* @import url('https://rsms.me/inter/inter.css'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Recursive&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,CRSV,MONO@-15..0,300..800,0..1,0..1,0..1&display=swap'); */
+
+/* Challenger Deep (https://challenger-deep-theme.github.io/) */
+:root {
+  --cd-black: hsl(246, 43%, 10%);
+  --cd-gray: hsl(219, 27%, 73%);
+  --cd-fg: hsl(189, 37%, 85%);
+  --cd-bg: hsl(249, 29%, 13%);
+  --cd-red: hsl(0, 100%, 75%);
+  --cd-dark-red: hsl(359, 100%, 66%);
+  --cd-green: hsl(128, 100%, 79%);
+  --cd-dark-green: hsl(148, 55%, 60%);
+  --cd-yellow: hsl(44, 100%, 83%);
+  --cd-dark-yellow: hsl(26, 100%, 74%);
+  --cd-blue: hsl(199, 100%, 78%);
+  --cd-dark-blue: hsl(210, 100%, 70%);
+  --cd-magenta: hsl(282, 57%, 73%);
+  --cd-dark-magenta: hsl(255, 100%, 71%);
+  --cd-cyan: hsl(161, 100%, 83%);
+  --cd-dark-cyan: hsl(180, 85%, 67%);
+}
+
+:root {
+  --color-fg: var(--cd-black);
+  --color-bg: var(--cd-gray);
+  --color-hd: var(--cd-dark-red);
+  --color-ln: var(--cd-dark-green);
+
+  /* --color-bg: white;
+  --color-fg: black;
+  --color-hd: rgb(161, 88, 255);
+  --color-ln: rgb(61, 246, 175);
+  --color-throbber: rgb(161, 88, 255); */
+  --font-casl: 0.5;
+  --font-crsv: 0.5;
+  --font-fam: "RecSpec";
+  --font-mono: 0;
+  --font-slnt: 0;
+  --font-wght: 400;
+
+  background: var(--color-bg);
+  box-sizing: border-box;
+  color: var(--color-fg);
+  font: 16px/1.5 var(--font-fam), system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  font-feature-settings: "dlig" 1, "liga" 1;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: var(--cd-bg);
+    --color-fg: var(--cd-fg);
+    --color-hd: var(--cd-red);
+    --color-ln: var(--cd-green);
+
+    /* --color-bg: rgb(24, 26, 27);
+    --color-fg: #eee;
+    --color-hd: rgb(161, 88, 255);
+    --color-ln: rgb(61, 246, 175); */
+  }
+}
+
+@supports (font-variation-settings: normal) {
+  :root {
+    /* --font-fam: 'Inter var';
+          font-variation-settings: 'calt' 1, 'tnum' 1, 'case' 1, 'ss01' 1, 'ss02' 1; */
+
+    font-variation-settings: "MONO" var(--font-mono), "CASL" var(--font-casl),
+      "wght" var(--font-wght), "slnt" var(--font-slnt), "CRSV" var(--font-crsv),
+      "ss12" 1;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+a,
+a:visited {
+  color: var(--color-ln);
+  text-decoration-line: none;
+}
+a:hover,
+a:visited:hover {
+  text-decoration-line: underline;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 50em;
+  padding: 1em;
+}
+
+footer {
+  font-size: 0.7rem;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  --font-wght: 800;
+  color: var(--color-hd);
+}
+
+hr {
+  margin: 2rem auto;
+  width: 33%;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  margin: 1em auto;
+  width: 100%;
+}
+
+.htmx-indicator {
+  color: var(--color-throbber);
+}
+
+#search-results * {
+  transition: all 0.5s;
+}
+#search-results ul {
+  padding: 1em;
+}
+#search-results [data-ips="false"] {
+  text-align: center;
+}

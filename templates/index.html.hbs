@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitsquatting</title>
+    <meta name="description" content="Search for bitsquatted domains">
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css">
+    <link rel="stylesheet" href="./public/main.css">
+    <link rel="stylesheet" href="./public/recursive_font.css">
+    <script src="https://unpkg.com/htmx.org@1.3.3"></script>
+  </head>
+
+  <body>
+    <main>
+      <form hx-post="/api/bitflip" hx-target="#search-results" hx-headers='{"Accept":"text/html"}'>
+        <label>
+          Enter a domain name:
+          <input type="text" autofocus=true name="domain_name" />
+        </label>
+        <input type="submit" accesskey="s" />
+        <img alt="" class="htmx-indicator"
+          src="https://samherbert.net/svg-loaders/svg-loaders/tail-spin.svg"
+          height="38" width="38"
+        />
+      </form>
+      <div id="search-results"></div>
+    </main>
+
+    <section>
+      <h2>What is this?</h2>
+
+      <p>
+        This is a tiny web site to find bitsquatted domains.
+        Bitsquatted domains are domains that are 1-bit away from from some target domain.
+        For example, a spontaneous bit-flip could happen when a particle in a microchip decays, or from a cosmic ray.
+        Assuming the target domain is highly trafficked, this 1-bit difference can allow someone to opportunisticly receive significant traffic for the intended target.
+      </p>
+      <p>
+        For information about bitsquatting, see <a href="https://remyhax.xyz/posts/bitsquatting-windows/">Remy's <i>Bitsquatting Windows.com</i></a> and <a href="http://dinaburg.org/bitsquatting.html">Artem Dinaburg's <i>Bitsquatting: DNS Hijacking without exploitation</i></a>.
+      </p>
+      <p>
+        If there are any IP addresses associated to bitsquatted domains, they should be controlled by you.
+        And if there are any unregistered domains, you should register those domains to prevent any future malicious use.
+        (Of course, this all depends on your own personal threat model; maybe bitsquatted domains are an insignificant security risk to you.)
+        The IP addresses returned are resolved from Google's or Cloudflare's public DNS servers.
+      </p>
+    </section>
+
+    <hr>
+
+    <footer>
+      <a href="https://github.com/mattmahn/bitsquatting">source code</a>
+    </footer>
+  </body>
+</html>
