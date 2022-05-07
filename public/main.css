@@ -131,9 +131,6 @@ td {
 #search-results * {
   transition: all 0.5s;
 }
-#search-results ul {
-  padding: 1em;
-}
 #search-results [data-ips="false"] {
   text-align: center;
 }
